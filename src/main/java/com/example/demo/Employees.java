@@ -1,10 +1,25 @@
 package com.example.demo;
 
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.Period;
 
+@Entity
+@Table
 public class Employees {
+    @Id
+    @SequenceGenerator(
+            name = "employee_sequence",
+            sequenceName = "employee_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "employee_sequence"
+    )
     private Integer id;
     private String name;
+    @Transient
     private Integer age;
     private String address;
     private LocalDate dateOfBirth;
@@ -13,18 +28,16 @@ public class Employees {
     public Employees() {
     }
 
-    public Employees(Integer id, String name, Integer age, String address, LocalDate dateOfBirth, String email) {
+    public Employees(Integer id, String name, String address, LocalDate dateOfBirth, String email) {
         this.id = id;
         this.name = name;
-        this.age = age;
         this.address = address;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
     }
 
-    public Employees(String name, Integer age, String address, LocalDate dateOfBirth, String email) {
+    public Employees(String name, String address, LocalDate dateOfBirth, String email) {
         this.name = name;
-        this.age = age;
         this.address = address;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
@@ -48,7 +61,7 @@ public class Employees {
     }
 
     public Integer getAge() {
-        return age;
+        return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
     }
 
     public void setAge(Integer age) {

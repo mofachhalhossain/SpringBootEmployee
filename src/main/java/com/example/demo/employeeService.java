@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -10,16 +10,14 @@ import java.util.List;
 
 @Service
 public class employeeService {
-    @GetMapping
+    private final EmployeeRepository employeeRepository;
+    @Autowired
+    public employeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
+
+
     public List<Employees> employees(){
-        return List.of(
-                new Employees(
-                        "Joe",
-                        23,
-                        "Dhaka",
-                        LocalDate.of(1997, Month.JULY,8),
-                        "Joe@gmail.com"
-                )
-        );
+        return employeeRepository.findAll();
     }
 }
